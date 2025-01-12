@@ -1,16 +1,17 @@
 import {Router} from 'express';
 import {
+  createTask,
+  deleteTask,
   getTasks,
-  addTask,
-  updateTask,
-  deleteTask
+  updateTask
 } from '../controllers/task.controller';
+import {asyncWrapper} from '../../middlewares/async-wrapper';
 
 const router = Router();
 
-router.get('/', getTasks);
-router.post('/', addTask);
-router.put('/:taskId', updateTask);
-router.delete('/:taskId', deleteTask);
+router.get('/', asyncWrapper(getTasks));
+router.post('/', createTask);
+router.put('/:id', updateTask);
+router.delete('/:id', deleteTask);
 
 export default router;

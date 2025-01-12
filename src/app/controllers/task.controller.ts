@@ -1,17 +1,28 @@
 import {Request, Response} from 'express';
+import {TaskService} from '../services/task.service';
 
-export const getTasks = (req: Request, res: Response) => {
-  res.send('Obtener todas las tareas');
+const taskService = new TaskService();
+
+export const getTasks = async (req: Request, res: Response) => {
+  const tasks = await taskService.getAllTask();
+  res.status(200).send(tasks);
 };
 
-export const addTask = (req: Request, res: Response) => {
-  res.send('Agregar una tarea');
+export const createTask = async (req: Request, res: Response) => {
+  const task = req.body;
+  const newTask = await taskService.createTask(task);
+  res.status(200).send(newTask);
 };
 
-export const updateTask = (req: Request, res: Response) => {
-  res.send('Actualizar una tarea');
+export const updateTask = async (req: Request, res: Response) => {
+  const taskId = req.params.id;
+  const task = req.body;
+  const taskResult = await taskService.updateTask(taskId, task);
+  res.status(200).send(taskResult);
 };
 
-export const deleteTask = (req: Request, res: Response) => {
-  res.send('Eliminar una tarea');
+export const deleteTask = async (req: Request, res: Response) => {
+  const taskId = req.params.id;
+  const response = await taskService.deleteTask(taskId);
+  res.status(200).send(response);
 };

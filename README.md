@@ -23,3 +23,9 @@ Para instalar las dependencias del proyecto, ejecuta el siguiente comando en la 
 ```bash
 npm install
 ```
+
+Para correr el proyecto en local:
+
+```bash
+npm run dev
+```
