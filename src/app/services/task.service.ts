@@ -1,5 +1,5 @@
 import {db} from '../../config/firebase.config';
-import {Task} from '../../interfaces/task.interface';
+import {Task} from '../interfaces/task.interface';
 import {
   addDoc,
   collection,

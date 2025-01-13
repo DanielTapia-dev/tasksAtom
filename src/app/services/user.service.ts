@@ -1,19 +1,24 @@
+import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {db} from '../../config/firebase.config';
-import {User} from '../../interfaces/user.model';
 
 export class UserService {
-  /* async createUser(userData: User): Promise<User> {
-    const userRef = db.collection('users');
-    await userRef.doc().set(userData);
-    return userData;
+  async createUser(userData: {email: string; [key: string]: any}) {
+    const email = userData.email;
+    const {email: _, ...dataWithoutEmail} = userData;
+    const userDocument = doc(db, 'users', email);
+
+    await setDoc(userDocument, dataWithoutEmail);
+    return {email: userDocument.id};
   }
 
-  async getUserByEmail(email: string): Promise<String | null> {
-    const userRef = db.collection('users');
-    const snapshot = await userRef.where('email', '==', email).get();
-    if (snapshot.empty) {
-      return null;
+  async getUserByEmail(
+    email: string
+  ): Promise<{exists: boolean; message: string}> {
+    const userDocument = doc(db, 'users', email);
+    const userSnapshot = await getDoc(userDocument);
+    if (!userSnapshot.exists()) {
+      return {exists: false, message: 'El usuario no existe.'};
     }
-    return snapshot.docs[0].data().email;
-  } */
+    return {exists: true, message: 'El usuario ya existe.'};
+  }
 }

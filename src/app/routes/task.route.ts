@@ -10,8 +10,8 @@ import {asyncWrapper} from '../../middlewares/async-wrapper';
 const router = Router();
 
 router.get('/', asyncWrapper(getTasks));
-router.post('/', createTask);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
+router.post('/', asyncWrapper(createTask));
+router.put('/:id', asyncWrapper(updateTask));
+router.delete('/:id', asyncWrapper(deleteTask));
 
 export default router;
