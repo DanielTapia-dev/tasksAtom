@@ -7,12 +7,16 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
+  query,
   Timestamp,
-  updateDoc
+  updateDoc,
+  where
 } from 'firebase/firestore';
+import {TaskStatus} from '../Utils/constants';
 
 export class TaskService {
-  async getAllTask(): Promise<Task[]> {
+  async getAllTasks(): Promise<Task[]> {
     const taskCollection = collection(db, 'tasks');
     const snapshot = await getDocs(taskCollection);
     if (snapshot.empty) {
@@ -24,13 +28,52 @@ export class TaskService {
     })) as Task[];
   }
 
+  async getAllActiveTasks() {
+    const tasksCollection = collection(db, 'tasks');
+
+    const filteredQuery = query(
+      tasksCollection,
+      where('status', '!=', TaskStatus.ELIMINADA),
+      orderBy('creationDate', 'desc')
+    );
+
+    const querySnapshot = await getDocs(filteredQuery);
+
+    const tasks = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return tasks;
+  }
+
+  async getTasksByUser(email: string) {
+    const tasksCollection = collection(db, 'tasks');
+
+    const filteredQuery = query(
+      tasksCollection,
+      where('status', 'in', [TaskStatus.PENDIENTE, TaskStatus.COMPLETADA]),
+      where('userEmail', '==', email),
+      orderBy('userEmail'),
+      orderBy('creationDate', 'desc')
+    );
+
+    const querySnapshot = await getDocs(filteredQuery);
+
+    for (let i = 0; i < querySnapshot.docs.length; i++) {
+      const element = querySnapshot.docs[i];
+    }
+    const tasks = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return tasks;
+  }
+
   async createTask(taskData: Task): Promise<Task> {
     const taskCollection = collection(db, 'tasks');
     const currentDate = Timestamp.fromDate(new Date());
-    const docRef = await addDoc(taskCollection, {
-      ...taskData,
-      creationDate: currentDate
-    });
+    taskData.creationDate = currentDate;
+    const docRef = await addDoc(taskCollection, taskData);
     return {...taskData, creationDate: currentDate, id: docRef.id};
   }
 

@@ -4,7 +4,18 @@ import {TaskService} from '../services/task.service';
 const taskService = new TaskService();
 
 export const getTasks = async (req: Request, res: Response) => {
-  const tasks = await taskService.getAllTask();
+  const tasks = await taskService.getAllTasks();
+  res.status(200).send(tasks);
+};
+
+export const getActiveTasks = async (req: Request, res: Response) => {
+  const tasks = await taskService.getAllActiveTasks();
+  res.status(200).send(tasks);
+};
+
+export const getTasksByUser = async (req: Request, res: Response) => {
+  const email = req.params.email;
+  const tasks = await taskService.getTasksByUser(email);
   res.status(200).send(tasks);
 };
 

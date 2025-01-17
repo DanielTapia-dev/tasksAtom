@@ -6,4 +6,5 @@ export interface Task {
   description: string;
   creationDate: Timestamp;
   status: string;
+  email: string;
 }

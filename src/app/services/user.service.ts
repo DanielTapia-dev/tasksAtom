@@ -5,10 +5,16 @@ export class UserService {
   async createUser(userData: {email: string; [key: string]: any}) {
     const email = userData.email;
     const {email: _, ...dataWithoutEmail} = userData;
+
+    const userDataWithTutorial = {
+      ...dataWithoutEmail,
+      tutorial: false
+    };
+
     const userDocument = doc(db, 'users', email);
 
-    await setDoc(userDocument, dataWithoutEmail);
-    return {email: userDocument.id};
+    await setDoc(userDocument, userDataWithTutorial);
+    return {email: userDocument.id, tutorial: false};
   }
 
   async getUserByEmail(
