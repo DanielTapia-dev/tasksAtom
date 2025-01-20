@@ -59,9 +59,6 @@ export class TaskService {
 
     const querySnapshot = await getDocs(filteredQuery);
 
-    for (let i = 0; i < querySnapshot.docs.length; i++) {
-      const element = querySnapshot.docs[i];
-    }
     const tasks = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data()
