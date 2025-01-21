@@ -18,6 +18,16 @@ Este proyecto es una aplicación backend construida con Node.js y TypeScript. Es
 
 ## Instalación
 
+Crear un archivo .env en la raiz del proyecto con las siguientes credenciales de prueba
+```bash
+FIREBASE_APIKEY="AIzaSyB_3AA7tvDvD8a2xCwJZmfoO3ruJHuGsn4"
+FIREBASE_AUTHDOMAIN="atom-tasks-cb1ec.firebaseapp.com"
+FIREBASE_PROJECTID="atom-tasks-cb1ec"
+FIREBASE_STORAGEBUCKET="atom-tasks-cb1ec.firebasestorage.app"
+FIREBASE_MESSAGINGSENDERID="716189266425"
+FIREBASE_APPID="1:716189266425:web:a8941e958fca677f8e4d2"
+```
+
 Para instalar las dependencias del proyecto, ejecuta el siguiente comando en la raíz del proyecto:
 
 ```bash
